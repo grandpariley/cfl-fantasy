@@ -45,7 +45,8 @@ class Model(ABC):
             rbs = list(filter(lambda d: d['position'] == 'running_back', data))
             wrs = list(filter(lambda d: d['position'] == 'wide_receiver', data))
             self.picks[k], budget = pick_position(budget, get_players_by_position(k, qbs, rbs, wrs, rbs + wrs))
-            self.re_sort(data, self.picks[k])
+            data = list(filter(lambda d: str(d) != str(self.picks[k]), data))
+            data = self.re_sort(data, self.picks, k, budget)
 
     def present(self):
         p = ''
@@ -61,7 +62,7 @@ class Model(ABC):
         pass
 
     @abstractmethod
-    def re_sort(self, data, picked):
+    def re_sort(self, data, picks, last_picked, budget):
         pass
 
 
@@ -69,7 +70,7 @@ class SimpleModel(Model, ABC):
     def sort(self, data):
         return sorted(data, key=self.key)
 
-    def re_sort(self, data, picks):
+    def re_sort(self, data, picks, last_picked, budget):
         return data
 
     @abstractmethod
