@@ -13,7 +13,7 @@ def pick_position(budget, players):
 
 
 class Model(ABC):
-    def __init__(self,  fetcher):
+    def __init__(self, fetcher):
         self.data = fetcher.get_data()
         self.picks = {
             'qb': '',
@@ -23,10 +23,6 @@ class Model(ABC):
             'wr2': '',
             'flex': '',
         }
-
-    @abstractmethod
-    def sort(self):
-        pass
 
     def pick(self):
         data = self.sort()
@@ -44,3 +40,7 @@ class Model(ABC):
 
     def present(self):
         print('\n'.join([k + ': ' + self.picks[k] for k in self.picks]))
+
+    @abstractmethod
+    def sort(self):
+        pass
