@@ -4,10 +4,11 @@ INITIAL_BUDGET = 40000
 
 
 def pick_position(budget, players):
-    while int(players[0]['price']) > budget:
+    while len(players) > 0 and int(players[0]['price']) > budget:
         players.pop()
+    if len(players) == 0:
+        return '', budget
     player = players.pop()
-    print(player)
     return player['firstName'] + ' ' + player['lastName'], budget - int(player['price'])
 
 
@@ -22,7 +23,7 @@ class Model(ABC):
             'wr1': '',
             'wr2': '',
             'flex': '',
-            'd': '' # not yet implemented
+            'd': ''  # not yet implemented
         }
 
     @abstractmethod
