@@ -10,7 +10,7 @@ def init_models(fetcher):
     :return: a registry of models to run
     """
     return {
-        'projected points': ProjectedPoints(fetcher),
-        'average points': AveragePoints(fetcher),
+        'projected': ProjectedPoints(fetcher),
+        'average': AveragePoints(fetcher),
         'touchdowns': Touchdowns(fetcher),
     }
