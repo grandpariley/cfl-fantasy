@@ -1,6 +1,6 @@
-from pkg.model.abstract_model import Model
+from pkg.model.abstract_model import SimpleModel
 
 
-class ProjectedPoints(Model):
-    def sort(self, data):
-        return sorted(data, key=lambda d: d['projected_points'])
+class ProjectedPoints(SimpleModel):
+    def key(self, d):
+        return d['projected_points']

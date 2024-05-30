@@ -44,3 +44,12 @@ class Model(ABC):
     @abstractmethod
     def sort(self, data):
         pass
+
+
+class SimpleModel(Model):
+    def sort(self, data):
+        return sorted(data, key=self.key)
+
+    @abstractmethod
+    def key(self, d):
+        pass
