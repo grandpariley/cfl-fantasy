@@ -13,14 +13,14 @@ def pick_position(budget, players):
     return player['firstName'] + ' ' + player['lastName'], budget - int(player['price'])
 
 
-def get_players_by_position(key, qbs, rbs, wrs):
+def get_players_by_position(key, qbs, rbs, wrs, flex):
     if 'qb' == key:
         return qbs
     elif 'rb' in key:
         return rbs
     elif 'wr' in key:
         return wrs
-    return []
+    return flex
 
 
 class Model(ABC):
@@ -37,16 +37,15 @@ class Model(ABC):
 
     def pick(self):
         data = self.sort(self.data)
-        qbs = list(filter(lambda d: d['position'] in ['quarterback'], data))
-        rbs = list(filter(lambda d: d['position'] in ['running_back'], data))
-        wrs = list(filter(lambda d: d['position'] in ['wide_receiver'], data))
         budget = INITIAL_BUDGET
-        keys = list(filter(lambda k: k != 'flex', self.picks.keys()))
+        keys = list(self.picks.keys())
         random.shuffle(keys)
         for k in keys:
-            self.picks[k], budget = pick_position(budget, get_players_by_position(k, qbs, rbs, wrs))
-        flex = wrs + rbs
-        self.picks['flex'], budget = pick_position(budget, flex)
+            qbs = list(filter(lambda d: d['position'] == 'quarterback', data))
+            rbs = list(filter(lambda d: d['position'] == 'running_back', data))
+            wrs = list(filter(lambda d: d['position'] == 'wide_receiver', data))
+            self.picks[k], budget = pick_position(budget, get_players_by_position(k, qbs, rbs, wrs, rbs + wrs))
+            self.re_sort(data, self.picks[k])
 
     def present(self):
         print('\n'.join([k + ': ' + self.picks[k] for k in self.picks]))
@@ -55,10 +54,17 @@ class Model(ABC):
     def sort(self, data):
         pass
 
+    @abstractmethod
+    def re_sort(self, data, picked):
+        pass
+
 
 class SimpleModel(Model, ABC):
     def sort(self, data):
         return sorted(data, key=self.key)
+
+    def re_sort(self, data, picks):
+        return data
 
     @abstractmethod
     def key(self, d):
