@@ -1,5 +1,4 @@
 from pkg.model.average_points import AveragePoints
-from pkg.model.price import Price
 from pkg.model.projected_points import ProjectedPoints
 from pkg.model.touchdowns import Touchdowns
 
