@@ -1,3 +1,4 @@
+import random
 from abc import ABC, abstractmethod
 
 INITIAL_BUDGET = 40000
@@ -10,6 +11,16 @@ def pick_position(budget, players):
         return '', budget
     player = players.pop()
     return player['firstName'] + ' ' + player['lastName'], budget - int(player['price'])
+
+
+def get_players_by_position(key, qbs, rbs, wrs):
+    if 'qb' == key:
+        return qbs
+    elif 'rb' in key:
+        return rbs
+    elif 'wr' in key:
+        return wrs
+    return []
 
 
 class Model(ABC):
@@ -30,11 +41,10 @@ class Model(ABC):
         rbs = list(filter(lambda d: d['position'] in ['running_back'], data))
         wrs = list(filter(lambda d: d['position'] in ['wide_receiver'], data))
         budget = INITIAL_BUDGET
-        self.picks['qb'], budget = pick_position(budget, qbs)
-        self.picks['rb1'], budget = pick_position(budget, rbs)
-        self.picks['wr1'], budget = pick_position(budget, wrs)
-        self.picks['rb2'], budget = pick_position(budget, rbs)
-        self.picks['wr2'], budget = pick_position(budget, wrs)
+        keys = list(filter(lambda k: k != 'flex', self.picks.keys()))
+        random.shuffle(keys)
+        for k in keys:
+            self.picks[k], budget = pick_position(budget, get_players_by_position(k, qbs, rbs, wrs))
         flex = wrs + rbs
         self.picks['flex'], budget = pick_position(budget, flex)
 
