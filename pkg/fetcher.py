@@ -87,7 +87,6 @@ def load():
         return
     with open(stats_file_name(), 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
-        writer.writerow(columns)
         r = requests.get(players_url)
         if r.status_code != 200:
             raise Exception(r)

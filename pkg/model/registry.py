@@ -1,4 +1,7 @@
+from pkg.model.average_points import AveragePoints
+from pkg.model.price import Price
 from pkg.model.projected_points import ProjectedPoints
+from pkg.model.touchdowns import Touchdowns
 
 
 def init_models(fetcher):
@@ -8,5 +11,8 @@ def init_models(fetcher):
     :return: a registry of models to run
     """
     return {
-        'projected points': ProjectedPoints(fetcher)
+        'projected points': ProjectedPoints(fetcher),
+        'average points': AveragePoints(fetcher),
+        'touchdowns': Touchdowns(fetcher),
+        'price': Price(fetcher),
     }
