@@ -30,10 +30,10 @@ class Model(ABC):
         pass
 
     def pick(self):
-        self.sort()
-        qbs = list(filter(lambda d: d['position'] in ['quarterback'], self.data))
-        rbs = list(filter(lambda d: d['position'] in ['running_back'], self.data))
-        wrs = list(filter(lambda d: d['position'] in ['wide_receiver'], self.data))
+        data = self.sort()
+        qbs = list(filter(lambda d: d['position'] in ['quarterback'], data))
+        rbs = list(filter(lambda d: d['position'] in ['running_back'], data))
+        wrs = list(filter(lambda d: d['position'] in ['wide_receiver'], data))
         budget = INITIAL_BUDGET
         self.picks['qb'], budget = pick_position(budget, qbs)
         self.picks['rb1'], budget = pick_position(budget, rbs)
