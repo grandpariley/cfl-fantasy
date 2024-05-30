@@ -8,9 +8,9 @@ def pick_position(budget, players):
     while len(players) > 0 and int(players[0]['price']) > budget:
         players.pop()
     if len(players) == 0:
-        return '', budget
+        return None, budget
     player = players.pop()
-    return player['firstName'] + ' ' + player['lastName'], budget - int(player['price'])
+    return player, budget - int(player['price'])
 
 
 def get_players_by_position(key, qbs, rbs, wrs, flex):
@@ -27,12 +27,12 @@ class Model(ABC):
     def __init__(self, fetcher):
         self.data = fetcher.get_data()
         self.picks = {
-            'qb': '',
-            'rb1': '',
-            'rb2': '',
-            'wr1': '',
-            'wr2': '',
-            'flex': '',
+            'qb': None,
+            'rb1': None,
+            'rb2': None,
+            'wr1': None,
+            'wr2': None,
+            'flex': None,
         }
 
     def pick(self):
@@ -48,7 +48,13 @@ class Model(ABC):
             self.re_sort(data, self.picks[k])
 
     def present(self):
-        print('\n'.join([k + ': ' + self.picks[k] for k in self.picks]))
+        p = ''
+        for k in self.picks.keys():
+            p += k + ': '
+            if self.picks[k] is not None:
+                p += self.picks[k]['firstName'] + ' ' + self.picks[k]['lastName']
+            p += '\n'
+        print(p)
 
     @abstractmethod
     def sort(self, data):
