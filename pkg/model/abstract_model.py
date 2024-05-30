@@ -56,7 +56,7 @@ class Model(ABC):
         pass
 
 
-class SimpleModel(Model):
+class SimpleModel(Model, ABC):
     def sort(self, data):
         return sorted(data, key=self.key)
 
