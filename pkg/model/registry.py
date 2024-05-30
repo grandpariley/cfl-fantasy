@@ -14,5 +14,4 @@ def init_models(fetcher):
         'projected points': ProjectedPoints(fetcher),
         'average points': AveragePoints(fetcher),
         'touchdowns': Touchdowns(fetcher),
-        'price': Price(fetcher),
     }
