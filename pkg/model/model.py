@@ -7,6 +7,7 @@ def pick_position(budget, players):
     while int(players[0]['price']) > budget:
         players.pop()
     player = players.pop()
+    print(player)
     return player['firstName'] + ' ' + player['lastName'], budget - int(player['price'])
 
 
