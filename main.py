@@ -1,9 +1,12 @@
 from pkg.fetcher import Fetcher
+from pkg.model.projected_points import ProjectedPoints
 
 
 def main():
     f = Fetcher()
-    print(f.get_data())
+    projected_points = ProjectedPoints('ProjectedPoints', f.get_data())
+    projected_points.pick()
+    projected_points.present()
 
 
 if __name__ == "__main__":

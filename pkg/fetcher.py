@@ -34,7 +34,6 @@ def stats_file_name():
 
 
 def parse_row(row):
-    print(len(row))
     return {
         'lastName': row[0],
         'firstName': row[1],
