@@ -32,8 +32,8 @@ class Model(ABC):
         budget = INITIAL_BUDGET
         self.picks['qb'], budget = pick_position(budget, qbs)
         self.picks['rb1'], budget = pick_position(budget, rbs)
-        self.picks['rb2'], budget = pick_position(budget, rbs)
         self.picks['wr1'], budget = pick_position(budget, wrs)
+        self.picks['rb2'], budget = pick_position(budget, rbs)
         self.picks['wr2'], budget = pick_position(budget, wrs)
         flex = wrs + rbs
         self.picks['flex'], budget = pick_position(budget, flex)
