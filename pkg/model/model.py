@@ -23,7 +23,6 @@ class Model(ABC):
             'wr1': '',
             'wr2': '',
             'flex': '',
-            'd': ''  # not yet implemented
         }
 
     @abstractmethod
