@@ -1,12 +1,14 @@
 from pkg.fetcher import Fetcher
-from pkg.model.projected_points import ProjectedPoints
+from pkg.model.registry import init_models
 
 
 def main():
     f = Fetcher()
-    projected_points = ProjectedPoints('ProjectedPoints', f.get_data())
-    projected_points.pick()
-    projected_points.present()
+    registry = init_models(f)
+    for m in registry:
+        registry[m].pick()
+        print(m + ' suggests you pick: ')
+        registry[m].present()
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-from pkg.model.model import Model
+from pkg.model.abstract_model import Model
 
 
 class ProjectedPoints(Model):

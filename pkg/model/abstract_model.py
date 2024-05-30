@@ -13,9 +13,8 @@ def pick_position(budget, players):
 
 
 class Model(ABC):
-    def __init__(self, name, data):
-        self.name = name
-        self.data = data
+    def __init__(self,  fetcher):
+        self.data = fetcher.get_data()
         self.picks = {
             'qb': '',
             'rb1': '',
@@ -44,4 +43,4 @@ class Model(ABC):
         self.picks['flex'], budget = pick_position(budget, flex)
 
     def present(self):
-        print(self.name + ' suggests you pick:\n' + '\n'.join([k + ': ' + self.picks[k] for k in self.picks]))
+        print('\n'.join([k + ': ' + self.picks[k] for k in self.picks]))
