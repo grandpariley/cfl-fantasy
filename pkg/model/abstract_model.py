@@ -25,7 +25,7 @@ class Model(ABC):
         }
 
     def pick(self):
-        data = self.sort()
+        data = self.sort(self.data)
         qbs = list(filter(lambda d: d['position'] in ['quarterback'], data))
         rbs = list(filter(lambda d: d['position'] in ['running_back'], data))
         wrs = list(filter(lambda d: d['position'] in ['wide_receiver'], data))
@@ -42,5 +42,5 @@ class Model(ABC):
         print('\n'.join([k + ': ' + self.picks[k] for k in self.picks]))
 
     @abstractmethod
-    def sort(self):
+    def sort(self, data):
         pass
