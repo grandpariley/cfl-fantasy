@@ -1,6 +1,6 @@
-from pkg.model.abstract_model import SimpleModel
+from pkg.model.abstract_model import Model
 
 
-class ProjectedPoints(SimpleModel):
-    def key(self, d):
+class ProjectedPoints(Model):
+    def score(self, d):
         return float(d['projected_points'])

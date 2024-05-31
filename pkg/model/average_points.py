@@ -1,6 +1,6 @@
-from pkg.model.abstract_model import SimpleModel
+from pkg.model.abstract_model import Model
 
 
-class AveragePoints(SimpleModel):
-    def key(self, d):
+class AveragePoints(Model):
+    def score(self, d):
         return float(d['average_points'] if d['average_points'] != '' else 0.0)

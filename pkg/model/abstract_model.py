@@ -38,16 +38,16 @@ class Model(ABC):
 
     def pick(self):
         budget = INITIAL_BUDGET
-        data = self.sort(self.data)
-        keys = self.sort_pick_positions(list(self.picks.keys()))
+        data = sorted(list(map(self.assign_score, self.data)), key=lambda d: d['score'])
+        keys = list(self.picks.keys())
+        random.shuffle(keys)
         for k in keys:
             qbs = list(filter(lambda d: d['position'] == 'quarterback', data))
             rbs = list(filter(lambda d: d['position'] == 'running_back', data))
             wrs = list(filter(lambda d: d['position'] == 'wide_receiver', data))
             flex = list(filter(lambda d: d['position'] in ('wide_receiver', 'running_back'), data))
             self.picks[k], budget = pick_position(budget, get_players_by_position(k, qbs, rbs, wrs, flex))
-            data = list(filter(lambda d: str(d) != str(self.picks[k]), data))
-            data = self.re_sort(data, self.picks, self.picks[k], budget)
+            data = sorted(list(map(lambda d: self.re_assign_score(d, self.picks, self.picks[k], budget), filter(lambda d: str(d) != str(self.picks[k]), data))), key=lambda d: d['score'])
 
     def present(self):
         p = ''
@@ -58,30 +58,17 @@ class Model(ABC):
             p += '\n'
         print(p)
 
-    @abstractmethod
-    def sort_pick_positions(self, positions):
-        pass
+    def assign_score(self, d):
+        d['score'] = self.score(d)
+        return d
+
+    def re_assign_score(self, d, picks, last_picked, budget):
+        d['score'] = self.re_score(d, picks, last_picked, budget)
+        return d
 
     @abstractmethod
-    def sort(self, data):
+    def score(self, d):
         pass
 
-    @abstractmethod
-    def re_sort(self, data, picks, last_picked, budget):
-        pass
-
-
-class SimpleModel(Model, ABC):
-    def sort(self, data):
-        return sorted(data, key=self.key)
-
-    def re_sort(self, data, picks, last_picked, budget):
-        return data
-
-    def sort_pick_positions(self, positions):
-        random.shuffle(positions)
-        return positions
-
-    @abstractmethod
-    def key(self, d):
-        pass
+    def re_score(self, d, picks, last_picked, budget):
+        return self.score(d)

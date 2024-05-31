@@ -1,6 +1,6 @@
-from pkg.model.abstract_model import SimpleModel
+from pkg.model.abstract_model import Model
 
 
-class Touchdowns(SimpleModel):
-    def key(self, d):
+class Touchdowns(Model):
+    def score(self, d):
         return sum([int(d['pass_tds']), int(d['receiving_tds']), int(d['rush_tds'])])
