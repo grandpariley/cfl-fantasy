@@ -1,3 +1,4 @@
+from pkg.model.all_different_teams_less_than_10000 import AllDifferentTeamsAndLessThan10000
 from pkg.model.average_points import AveragePoints
 from pkg.model.projected_points import ProjectedPoints
 from pkg.model.touchdowns import Touchdowns
@@ -13,4 +14,5 @@ def init_models(fetcher):
         'projected': ProjectedPoints(fetcher),
         'average': AveragePoints(fetcher),
         'touchdowns': Touchdowns(fetcher),
+        'teamsAnd10000': AllDifferentTeamsAndLessThan10000(fetcher)
     }

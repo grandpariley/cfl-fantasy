@@ -4,12 +4,18 @@ from abc import ABC, abstractmethod
 INITIAL_BUDGET = 40000
 
 
+def firstfive(l):
+    return list(map(lambda t: t['lastName'] + ' : ' + t['projected_points'] + ' : ' + t['price'], l))[-5:]
+
+
 def pick_position(budget, players):
-    while len(players) > 0 and int(players[0]['price']) > budget:
-        players.pop()
-    if len(players) == 0:
+    player = None
+
+    for i in range(len(players)):
+        if int(players[i]['price']) <= budget:
+            player = players[i]
+    if player is None:
         return None, budget
-    player = players.pop()
     return player, budget - int(player['price'])
 
 
@@ -36,17 +42,23 @@ class Model(ABC):
         }
 
     def pick(self):
-        data = self.sort(self.data)
         budget = INITIAL_BUDGET
+        data = self.sort(self.data)
         keys = list(self.picks.keys())
         random.shuffle(keys)
         for k in keys:
+            print('----------------------- picking ' + k + ' with $' + str(budget) + ' left-----------------')
             qbs = list(filter(lambda d: d['position'] == 'quarterback', data))
             rbs = list(filter(lambda d: d['position'] == 'running_back', data))
             wrs = list(filter(lambda d: d['position'] == 'wide_receiver', data))
-            self.picks[k], budget = pick_position(budget, get_players_by_position(k, qbs, rbs, wrs, rbs + wrs))
+            flex = list(filter(lambda d: d['position'] in ('wide_receiver', 'running_back'), data))
+            print(firstfive(qbs))
+            print(firstfive(rbs))
+            print(firstfive(wrs))
+            print(firstfive(flex))
+            self.picks[k], budget = pick_position(budget, get_players_by_position(k, qbs, rbs, wrs, flex))
             data = list(filter(lambda d: str(d) != str(self.picks[k]), data))
-            data = self.re_sort(data, self.picks, k, budget)
+            data = self.re_sort(data, self.picks, self.picks[k], budget)
 
     def present(self):
         p = ''
