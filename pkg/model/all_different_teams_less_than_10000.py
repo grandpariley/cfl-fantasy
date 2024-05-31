@@ -22,3 +22,6 @@ class AllDifferentTeamsAndLessThan10000(Model):
         if last_picked:
             picked_teams.append(last_picked['team'])
         return score_and_sort(data)
+
+    def sort_pick_positions(self, positions):
+        return sorted(positions)

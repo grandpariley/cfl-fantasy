@@ -7,7 +7,7 @@ from pkg.model.registry import init_models
 def main():
     f = Fetcher()
     registry = init_models(f)
-    if sys.argv[1] == 'list':
+    if len(sys.argv) > 1 and sys.argv[1] == 'list':
         print('\n'.join(list(registry.keys())))
         return
     for m in registry:

@@ -6,7 +6,6 @@ INITIAL_BUDGET = 40000
 
 def pick_position(budget, players):
     player = None
-
     for i in range(len(players)):
         if int(players[i]['price']) <= budget:
             player = players[i]
@@ -40,8 +39,7 @@ class Model(ABC):
     def pick(self):
         budget = INITIAL_BUDGET
         data = self.sort(self.data)
-        keys = list(self.picks.keys())
-        random.shuffle(keys)
+        keys = self.sort_pick_positions(list(self.picks.keys()))
         for k in keys:
             qbs = list(filter(lambda d: d['position'] == 'quarterback', data))
             rbs = list(filter(lambda d: d['position'] == 'running_back', data))
@@ -61,6 +59,10 @@ class Model(ABC):
         print(p)
 
     @abstractmethod
+    def sort_pick_positions(self, positions):
+        pass
+
+    @abstractmethod
     def sort(self, data):
         pass
 
@@ -75,6 +77,10 @@ class SimpleModel(Model, ABC):
 
     def re_sort(self, data, picks, last_picked, budget):
         return data
+
+    def sort_pick_positions(self, positions):
+        random.shuffle(positions)
+        return positions
 
     @abstractmethod
     def key(self, d):
