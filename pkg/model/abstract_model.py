@@ -4,10 +4,6 @@ from abc import ABC, abstractmethod
 INITIAL_BUDGET = 40000
 
 
-def firstfive(l):
-    return list(map(lambda t: t['lastName'] + ' : ' + t['projected_points'] + ' : ' + t['price'], l))[-5:]
-
-
 def pick_position(budget, players):
     player = None
 
