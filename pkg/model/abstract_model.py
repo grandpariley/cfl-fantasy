@@ -1,5 +1,6 @@
 import random
 from abc import ABC, abstractmethod
+from math import inf
 
 INITIAL_BUDGET = 40000
 
@@ -43,7 +44,7 @@ class Model(ABC):
     def __init__(self, fetcher):
         self.data = fetcher.get_data()
         self.picks = blank_picks()
-        self.current_pick_score = 0
+        self.current_pick_score = -inf
 
     def pick(self):
         for _ in range(3):
