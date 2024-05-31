@@ -56,23 +56,16 @@ class Model(ABC):
         data = sorted(list(map(self.assign_score, self.data)), key=lambda d: d['score'])
         picks = blank_picks()
         for p in positions:
-            self._pick(budget, data, p, picks)
+            qbs = list(filter(lambda d: d['position'] == 'quarterback', data))
+            rbs = list(filter(lambda d: d['position'] == 'running_back', data))
+            wrs = list(filter(lambda d: d['position'] == 'wide_receiver', data))
+            flex = list(filter(lambda d: d['position'] in ('wide_receiver', 'running_back'), data))
+            picks[p], budget = pick_position(budget, get_players_by_position(p, qbs, rbs, wrs, flex))
+            data = sorted(list(map(lambda d: self.re_assign_score(d, self.picks, self.picks[p], budget), filter(lambda d: str(d) != str(picks[p]), data))), key=lambda d: d['score'])
         pick_score = get_pick_score(picks)
         if self.current_pick_score < pick_score:
             self.picks = picks
             self.current_pick_score = pick_score
-
-    def _pick(self, budget, data, p, picks):
-        qbs = list(filter(lambda d: d['position'] == 'quarterback', data))
-        rbs = list(filter(lambda d: d['position'] == 'running_back', data))
-        wrs = list(filter(lambda d: d['position'] == 'wide_receiver', data))
-        flex = list(filter(lambda d: d['position'] in ('wide_receiver', 'running_back'), data))
-        picks[p], budget = pick_position(budget, get_players_by_position(p, qbs, rbs, wrs, flex))
-        data = self._refresh_data(data, p, budget, picks)
-
-    def _refresh_data(self, data, p, budget, picks):
-        return sorted(list(map(lambda d: self.re_assign_score(d, self.picks, self.picks[p], budget),
-                               filter(lambda d: str(d) != str(picks[p]), data))), key=lambda d: d['score'])
 
     def present(self):
         p = ''
