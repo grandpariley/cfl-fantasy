@@ -1,5 +1,4 @@
 import itertools
-import random
 from abc import ABC, abstractmethod
 from math import inf
 
@@ -36,7 +35,6 @@ def filter_duplicates(positions):
         if any(pi in pos for pi in positional_inverses(p)):
             continue
         pos.append(p)
-    print(len(pos))
     return pos
 
 
