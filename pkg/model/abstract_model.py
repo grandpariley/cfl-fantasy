@@ -15,14 +15,14 @@ def pick_position(budget, players):
     return player, budget - int(player['price'])
 
 
-def get_players_by_position(key, qbs, rbs, wrs, flex):
+def get_players_by_position(key, data):
     if 'qb' == key:
-        return qbs
+        return list(filter(lambda d: d['position'] == 'quarterback', data))
     elif 'rb' in key:
-        return rbs
+        return list(filter(lambda d: d['position'] == 'running_back', data))
     elif 'wr' in key:
-        return wrs
-    return flex
+        return list(filter(lambda d: d['position'] == 'wide_receiver', data))
+    return list(filter(lambda d: d['position'] in ('wide_receiver', 'running_back'), data))
 
 
 def get_pick_score(picks):
@@ -76,11 +76,7 @@ class Model(ABC):
         data = sorted(list(map(self.assign_score, self.data)), key=lambda d: d['score'])
         picks = blank_picks()
         for p in positions:
-            qbs = list(filter(lambda d: d['position'] == 'quarterback', data))
-            rbs = list(filter(lambda d: d['position'] == 'running_back', data))
-            wrs = list(filter(lambda d: d['position'] == 'wide_receiver', data))
-            flex = list(filter(lambda d: d['position'] in ('wide_receiver', 'running_back'), data))
-            picks[p], budget = pick_position(budget, get_players_by_position(p, qbs, rbs, wrs, flex))
+            picks[p], budget = pick_position(budget, get_players_by_position(p, data))
             data = sorted(list(map(lambda d: self.re_assign_score(d, self.picks, self.picks[p], budget),
                                    filter(lambda d: str(d) != str(picks[p]), data))), key=lambda d: d['score'])
         pick_score = get_pick_score(picks)
