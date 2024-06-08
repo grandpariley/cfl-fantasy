@@ -2,7 +2,7 @@ import itertools
 from abc import ABC, abstractmethod
 from math import inf
 
-INITIAL_BUDGET = 40000
+INITIAL_BUDGET = 70000
 
 
 def pick_position(budget, players):
